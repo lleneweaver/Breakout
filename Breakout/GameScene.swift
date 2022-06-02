@@ -8,24 +8,74 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene
+class GameScene: SKScene, SKPhysicsContactDelegate
 {
     var ball = SKSpriteNode()
     var paddle = SKSpriteNode()
+    var blocks = SKSpriteNode()
     
     override func didMove(to view: SKView)
     {
-        
+    
     ball = childNode(withName: "ball") as! SKSpriteNode
     paddle = childNode(withName: "paddle") as! SKSpriteNode
+    blocks = childNode(withName: "block") as! SKSpriteNode
+    createBlocks()
         
     let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
     borderBody.friction = 0
         
     self.physicsBody = borderBody
     self.physicsWorld.gravity = CGVector(dx: 0, dy: 9.8)
-       
     }
+    
+    func makeBlocks(point: CGPoint)
+    {
+        blocks = SKSpriteNode(color: UIColor.systemRed, size: CGSize(width: 150, height: 50))
+        addChild(blocks)
+        
+        blocks.physicsBody = SKPhysicsBody(rectangleOf: blocks.frame.size)
+        blocks.physicsBody?.allowsRotation = false
+        blocks.physicsBody?.friction = 0
+        blocks.physicsBody?.affectedByGravity = false
+        blocks.physicsBody?.isDynamic = false
+    }
+    
+    
+    func createBlocks()
+    {
+        for i in 1...5
+        {
+            let point = CGPoint(x: frame.width/5 * CGFloat(i) - 50, y: frame.height * 0.75)
+            
+            makeBlocks(point: point)
+        }
+        for i in 2...5
+        {
+            let point = CGPoint(x: frame.width/5 * CGFloat(i) - 40, y: frame.height * 0.75)
+            
+            makeBlocks(point: point)
+        }
+        for i in 1...5
+        {
+            let point = CGPoint(x: frame.width/5 * CGFloat(i) - 50, y: frame.height * 0.95)
+            
+            makeBlocks(point: point)
+        }
+        for i in 1...5
+        {
+            let point = CGPoint(x: frame.width/5 * CGFloat(i) - 50, y: frame.height * 0.75)
+            
+            makeBlocks(point: point)
+        }
+    }
+    
+    func blockDisappears()
+    {
+       
+
+    }
+    
     var isTouchingPaddle = false
     // this method gets called everytime i touch my screen
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
