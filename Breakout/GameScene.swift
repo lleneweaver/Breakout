@@ -20,13 +20,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     ball = childNode(withName: "ball") as! SKSpriteNode
     paddle = childNode(withName: "paddle") as! SKSpriteNode
     blocks = childNode(withName: "block") as! SKSpriteNode
-    createBlocks()
+ //   createBlocks()
         
     let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
     borderBody.friction = 0
         
     self.physicsBody = borderBody
     self.physicsWorld.gravity = CGVector(dx: 0, dy: 9.8)
+        
+        ball.physicsBody?.categoryBitMask = 1
+        paddle.physicsBody?.categoryBitMask = 2
+        blocks.physicsBody?.categoryBitMask = 3
+        
+        ball.physicsBody?.contactTestBitMask = 2 | 3 
     }
     
     func makeBlocks(point: CGPoint)
@@ -41,38 +47,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         blocks.physicsBody?.isDynamic = false
     }
     
-    
-    func createBlocks()
-    {
-        for i in 1...5
-        {
-            let point = CGPoint(x: frame.width/5 * CGFloat(i) - 50, y: frame.height * 0.75)
-            
-            makeBlocks(point: point)
-        }
-        for i in 2...5
-        {
-            let point = CGPoint(x: frame.width/5 * CGFloat(i) - 40, y: frame.height * 0.75)
-            
-            makeBlocks(point: point)
-        }
-        for i in 1...5
-        {
-            let point = CGPoint(x: frame.width/5 * CGFloat(i) - 50, y: frame.height * 0.95)
-            
-            makeBlocks(point: point)
-        }
-        for i in 1...5
-        {
-            let point = CGPoint(x: frame.width/5 * CGFloat(i) - 50, y: frame.height * 0.75)
-            
-            makeBlocks(point: point)
-        }
-    }
+//    func createBlocks()
+//    {
+//        for i in 1...5
+//        {
+//            let point = CGPoint(x: frame.width/5 * CGFloat(i) - 50, y: frame.height * 0.75)
+//
+//            makeBlocks(point: point)
+//        }
+//    }
     
     func blockDisappears()
     {
-       
+        if ball.position == blocks.position
+        {
+            removeChildren(in: block)
+        }
 
     }
     
